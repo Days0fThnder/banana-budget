@@ -1,11 +1,8 @@
 package com.jeanleman.budget.rest;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,11 +25,9 @@ public class BudgetRestController {
 		BigDecimal totalCost = new BigDecimal("0.00");
 		try {
 			totalCost = budgetService.calculateBananaCost(startDate, numOfDays);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return HttpStatus.BAD_REQUEST.name();
-		} catch (IllegalArgumentException i) {
-			return HttpStatus.BAD_REQUEST.name();
+		} catch (Exception e) {
+			return HttpStatus.BAD_REQUEST.value()+" "+HttpStatus.BAD_REQUEST.getReasonPhrase()
+			+" check the date format and make sure it's (MM/DD/YYYY)";
 		}
 		
 		return "Total Cost: $"+totalCost;
